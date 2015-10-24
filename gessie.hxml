@@ -1,0 +1,4 @@
+-cp src
+-main Main
+-neko bin/test.n
+-cmd neko "bin/test.n"

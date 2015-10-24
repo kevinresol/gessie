@@ -1,9 +1,12 @@
 package gessie.core;
 
+@:enum
 abstract GestureState(Int) to Int
 {
     public var isEndState(get, never):Bool;
     
+	var GSNone = 0;
+	
     var GSPossible = 1 ;
     var GSBegan = 2;
     var GSChanged = 3 ;
@@ -25,6 +28,7 @@ abstract GestureState(Int) to Int
             case GSEnded: GEEnded;
             case GSCancelled: GECancelled;
             case GSFailed: GEFailed;
+			default: GEFailed;
         }
     }
     
@@ -45,6 +49,7 @@ abstract GestureState(Int) to Int
             case GSEnded: [GSPossible];
             case GSCancelled: [GSPossible];
             case GSFailed: [GSPossible];
+            default: [];
         }
         return a.indexOf(s) != -1;
     }

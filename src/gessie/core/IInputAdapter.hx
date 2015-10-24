@@ -1,8 +1,8 @@
 package gessie.core;
 
-interface IInputAdapter
+interface IInputAdapter<T:{}>
 {
-	var touchesManager(get, set):TouchesManager;
+	var touchManager(get, set):TouchManager<T>;
 	
-	function init():void;
+	function init():Void;
 }

@@ -2,6 +2,7 @@ package gessie.core;
 
 import gessie.geom.Point;
 
+@:allow(gessie)
 class Touch<T>
 {
     public var id:Int;
@@ -12,14 +13,15 @@ class Touch<T>
 	public var sizeY:Float;
 	public var pressure:Float;
 	
-	public var time:Int
+	public var time:Int;
 	public var beginTime:Int;
     
     var location(get, null):Point;
+    var locationOffset(get, null):Point;
     var beginLocation(get, null):Point;
     var prevLocation(get, null):Point;
     
-    public function new(id)
+    public function new(id = 0)
     {
         this.id = id;
     }
@@ -29,23 +31,23 @@ class Touch<T>
 	{
 		location = new Point(x, y);
 		beginLocation = location.clone();
-		previousLocation = location.clone();
+		prevLocation = location.clone();
 		
 		this.time = beginTime = time;
 	}
 	
     function updateLocation(x:Float, y:Float, time:Int):Bool
 	{
-		if(location ! =  null)
+		if(location !=  null)
 		{
 			if(location.x == x && location.y == y)
 				return false;
 			
-			previousLocation.x = location.x;
-			previousLocation.y = location.y;
+			prevLocation.x = location.x;
+			prevLocation.y = location.y;
 			location.x = x;
 			location.y = y;
-			time = time;
+			this.time = time;
 		}
 		else
 		{
@@ -56,7 +58,7 @@ class Touch<T>
 	}
 	
 	
-	public function clone():Touch
+	public function clone()
 	{
 		var touch = new Touch(id);
 		touch.location = location.clone();
@@ -71,18 +73,18 @@ class Touch<T>
 		return touch;
 	}
 	
-	
 	public function toString():String
 		return "Touch [id:" + id + ", location:" + location + ", ...]";
         
-        
-    
-	function get_location():Point
+	inline function get_location():Point
 		return location.clone();
+		
+	inline function get_locationOffset():Point
+		return location.subtract(beginLocation);
         
-	function get_beginLocation():Point
+	inline function get_beginLocation():Point
 		return beginLocation.clone();
         
-	function get_prevLocation():Point
+	inline function get_prevLocation():Point
 		return prevLocation.clone();
 }

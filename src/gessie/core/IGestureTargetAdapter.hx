@@ -1,8 +1,8 @@
 package gessie.core;
 
-interface IGestureTargetAdapter<T>
+interface IGestureTargetAdapter<T:{}>
 {
-    public var target(get, set):T;
+    public var target:T;
 	
 	function contains(other:T):Bool;
 }

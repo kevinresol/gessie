@@ -15,11 +15,11 @@ class Touch<T>
 	
 	public var time:Int;
 	public var beginTime:Int;
-    
-    var location(get, null):Point;
-    var locationOffset(get, null):Point;
-    var beginLocation(get, null):Point;
-    var prevLocation(get, null):Point;
+	
+    var location(default, null):Point;
+    var locationOffset(get, never):Point;
+    var beginLocation(default, null):Point;
+    var prevLocation(default, null):Point;
     
     public function new(id = 0)
     {
@@ -38,7 +38,7 @@ class Touch<T>
 	
     function updateLocation(x:Float, y:Float, time:Int):Bool
 	{
-		if(location !=  null)
+		if(location != null)
 		{
 			if(location.x == x && location.y == y)
 				return false;
@@ -75,16 +75,7 @@ class Touch<T>
 	
 	public function toString():String
 		return "Touch [id:" + id + ", location:" + location + ", ...]";
-        
-	inline function get_location():Point
-		return location.clone();
 		
 	inline function get_locationOffset():Point
 		return location.subtract(beginLocation);
-        
-	inline function get_beginLocation():Point
-		return beginLocation.clone();
-        
-	inline function get_prevLocation():Point
-		return prevLocation.clone();
 }

@@ -7,6 +7,7 @@ import gessie.core.Touch;
 import gessie.geom.Point;
 import gessie.util.Emitter;
 import gessie.util.Macros.*;
+import gessie.util.Util;
 
 /**
  * ...
@@ -15,7 +16,7 @@ import gessie.util.Macros.*;
 @:allow(gessie)
 class Gesture<T:{}>
 {
-	public static var DEFAULT_SLOP:Int = Math.round(20 / 252 /* TODO * flash.system.Capabilities.screenDPI*/);
+	public static var DEFAULT_SLOP:Int = Math.round(20 / 252 * Util.SCREEN_DPI);
 	
 	public var target(get, set):T;
 	public var state(default, null):GestureState = GSPossible;
@@ -23,7 +24,7 @@ class Gesture<T:{}>
 	public var enabled(default, set):Bool = true;
 	public var targetAdapter:IGestureTargetAdapter<T>;
 	public var touchesCount(default, null):Int = 0;
-	public var location(get, null):Point = new Point();
+	public var location(default, null):Point = new Point();
 	
 	public var gestureShouldReceiveTouchCallback:Gesture<T>->Touch<T>->Bool;
 	public var gestureShouldBeginCallback:Gesture<T>->Bool;
@@ -418,6 +419,4 @@ class Gesture<T:{}>
 		return v;
 	}
 	
-	inline function get_location():Point
-		return location.clone();
 }

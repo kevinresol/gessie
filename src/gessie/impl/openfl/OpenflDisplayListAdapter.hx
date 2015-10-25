@@ -1,6 +1,7 @@
 package gessie.impl.openfl;
 import gessie.core.Gessie;
 import gessie.core.IDisplayListAdapter;
+import haxe.ds.WeakMap;
 import openfl.display.DisplayObject;
 import openfl.display.DisplayObjectContainer;
 import openfl.display.Stage;
@@ -11,16 +12,17 @@ import openfl.display.Stage;
  */
 class OpenflDisplayListAdapter implements IDisplayListAdapter<DisplayObject>
 {
-	public var target:DisplayObject;
+	public var target(get, null):DisplayObject;
+	
+	var targetWeakMap:WeakMap<DisplayObject, Bool> = new WeakMap();
 
 	public function new(target:DisplayObject = null) 
 	{
-		this.target = target;
+		targetWeakMap.set(target, true);
 	}
 	
 	public function contains(object:DisplayObject):Bool
 	{
-		
 		if (target == Gessie.root)
 		{
 			return true;
@@ -64,4 +66,11 @@ class OpenflDisplayListAdapter implements IDisplayListAdapter<DisplayObject>
 		
 		return list;
 	}
+	
+	 function get_target():DisplayObject
+	 {
+		for (key in targetWeakMap.keys())
+			return key;
+		return null;
+	 }
 }

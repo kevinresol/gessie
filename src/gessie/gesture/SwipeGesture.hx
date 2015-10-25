@@ -10,7 +10,7 @@ using gessie.util.Util;
  */
 class SwipeGesture<T:{}> extends Gesture<T>
 {
-	private static var ANGLE:Float = 40.degreeToRadian();
+	private static inline var ANGLE:Float = 40.degreeToRadian();
 	private static inline var MAX_DURATION:Int = 500;
 	private static var MIN_OFFSET:Float = Util.SCREEN_DPI / 6;
 	private static var MIN_VELOCITY:Float = 2 * MIN_OFFSET / MAX_DURATION;

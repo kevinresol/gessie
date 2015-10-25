@@ -9,8 +9,8 @@ class Util
 {
 	public static var SCREEN_DPI = #if openfl openfl.system.Capabilities.screenDPI #else 160 #end;
 	
-	static var DEGREE_TO_RADIAN = Math.PI / 180;
-	static var RADIAN_TO_DEGREE = 180 / Math.PI;
+	static inline var DEGREE_TO_RADIAN = .01745329251;
+	static inline var RADIAN_TO_DEGREE = 57.2957795131;
 
 	public static inline function getTimer() 
 	{

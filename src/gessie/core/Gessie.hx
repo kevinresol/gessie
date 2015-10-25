@@ -48,6 +48,11 @@ class Gessie
 		touchManager.removeInputAdapter(hitTester);
 	}
 	
+	public static function update()
+	{
+		emitter.emit(GEnterFrame);
+	}
+	
 	static function createGestureTargetAdapter<T:{}>(target:T):IDisplayListAdapter<T>
 	{
 		var adapter = getDisplayListAdapter(target);

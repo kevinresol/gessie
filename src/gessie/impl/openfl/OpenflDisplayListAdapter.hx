@@ -1,7 +1,6 @@
 package gessie.impl.openfl;
 import gessie.core.Gessie;
 import gessie.core.IDisplayListAdapter;
-import haxe.ds.WeakMap;
 import openfl.display.DisplayObject;
 import openfl.display.DisplayObjectContainer;
 import openfl.display.Stage;
@@ -14,8 +13,13 @@ class OpenflDisplayListAdapter implements IDisplayListAdapter<DisplayObject>
 {
 	public var target(get, null):DisplayObject;
 	
-	var targetWeakMap:WeakMap<DisplayObject, Bool> = new WeakMap();
-
+	// TODO: need a cross-platform weak ref
+	#if js
+	var targetWeakMap:Map<DisplayObject, Bool> = new Map();
+	#else
+	var targetWeakMap:haxe.ds.WeakMap<DisplayObject, Bool> = new haxe.ds.WeakMap();
+	#end
+	
 	public function new(target:DisplayObject = null) 
 	{
 		targetWeakMap.set(target, true);
@@ -28,7 +32,7 @@ class OpenflDisplayListAdapter implements IDisplayListAdapter<DisplayObject>
 			return true;
 		}
 		var targetAsDOC = Std.instance(this.target, DisplayObjectContainer);
-		return targetAsDOC.contains(object);
+		return targetAsDOC != null && targetAsDOC.contains(object);
 		
 		/**
 		 * There might be case when we use some old "software" 3D library for instace,
@@ -67,10 +71,10 @@ class OpenflDisplayListAdapter implements IDisplayListAdapter<DisplayObject>
 		return list;
 	}
 	
-	 function get_target():DisplayObject
-	 {
+	function get_target():DisplayObject
+	{
 		for (key in targetWeakMap.keys())
 			return key;
 		return null;
-	 }
+	}
 }

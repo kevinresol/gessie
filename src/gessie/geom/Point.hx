@@ -10,6 +10,7 @@ class Point
 {
     public var x:Float;
     public var y:Float;
+	public var length(get, never):Float;
 	
 	public static function distance(p1:Point, p2:Point):Float
 	{
@@ -32,6 +33,9 @@ class Point
     
     public function toString():String
         return '($x, $y)';
+		
+	inline function get_length():Float
+		return Math.sqrt(x * x + y * y);
 }
 
 #end

@@ -1,0 +1,19 @@
+{
+	"name": "gessie",
+	"license": "MIT",
+	"tags": [
+		"gesture",
+		"cross"
+	],
+	"classPath": "src",
+	"description": "Gesture Recognition",
+	"contributors": [
+		"kevinresol"
+	],
+	"releasenote": "WIP",
+	"version": "0.0.1",
+	"url": "",
+	"dependencies": {
+		
+	}
+}

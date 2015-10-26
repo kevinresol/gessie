@@ -121,7 +121,7 @@ class OpenflInputAdapter implements IInputAdapter<DisplayObject>
 		if (event.eventPhase == EventPhase.BUBBLING_PHASE)
 			return;
 		
-		if (Reflect.hasField(event, "isTouchPointCanceled") && Reflect.field(event, "isTouchPointCanceled"))
+		if (Reflect.field(event, "isTouchPointCanceled") == true)
 		{
 			touchManager.onTouchCancel(event.touchPointID, event.stageX, event.stageY);
 		}

@@ -17,16 +17,12 @@ class LuxeTouchHitTester implements ITouchHitTester<Visual>
 		helperVector = new Vector();
 	}
 	
-	/* INTERFACE gessie.core.ITouchHandler.ITouchHitTester<T> */
-	
 	public function hitTest(point:Point, possibleTarget:Visual):Visual
 	{
-		if (possibleTarget != null) return possibleTarget;
-		
-		helperVector.set_xy(point.x, point.y);
-		
-		return null;
-		//return Luxe.utils.geometry.point_in_geometry(helperVector, possibleTarget.geometry);
+		/* since the touch begin event is only triggered when there is a target
+		 * (see LuxeInputAdapter#ontouchdown), we don't need to find target from a point here
+		 */
+		return possibleTarget;
 	}
 	
 }

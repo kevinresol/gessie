@@ -1,4 +1,5 @@
 package gessie.impl.luxe;
+import gessie.core.Gessie;
 import gessie.core.IInputAdapter;
 import gessie.core.TouchManager;
 import luxe.Input.MouseEvent;
@@ -26,6 +27,7 @@ class LuxeInputAdapter implements IInputAdapter<Visual>
 	
 	public function init():Void
 	{
+		Luxe.on(Luxe.Ev.update, function(_) Gessie.update());
 		Luxe.on(Luxe.Ev.touchdown, ontouchdown);
 		Luxe.on(Luxe.Ev.touchup, ontouchup);
 		Luxe.on(Luxe.Ev.touchmove, ontouchmove);

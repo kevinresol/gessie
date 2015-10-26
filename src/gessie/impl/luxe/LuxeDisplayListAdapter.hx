@@ -27,7 +27,18 @@ class LuxeDisplayListAdapter implements IDisplayListAdapter<Visual>
 	
 	public function contains(object:Visual):Bool
 	{
-		return true;
+		function contain(e:Entity, o:Entity)
+		{
+			if (e.children.indexOf(o) != -1)
+				return true;
+			
+			for (c in e.children)
+				if (contain(c, o)) return true;
+				
+			return false;
+		}
+		
+		return contain(target, object);
 	}
 	
 	public function getHierarchy(object:Visual):Array<Visual>

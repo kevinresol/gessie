@@ -21,9 +21,11 @@ class LuxeTouchHitTester implements ITouchHitTester<Visual>
 	
 	public function hitTest(point:Point, possibleTarget:Visual):Visual
 	{
+		if (possibleTarget != null) return possibleTarget;
+		
 		helperVector.set_xy(point.x, point.y);
 		
-		return possibleTarget;
+		return null;
 		//return Luxe.utils.geometry.point_in_geometry(helperVector, possibleTarget.geometry);
 	}
 	

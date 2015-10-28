@@ -1,7 +1,7 @@
 package gessie.impl.luxe;
 import gessie.core.IDisplayListAdapter;
 import luxe.Entity;
-
+import luxe.Scene;
 import luxe.Visual;
 
 /**
@@ -10,19 +10,13 @@ import luxe.Visual;
  */
 class LuxeDisplayListAdapter implements IDisplayListAdapter<Visual>
 {
-	public var target(get, null):Visual;
+	public static var targets:Array<Visual> = [];
 	
-	// TODO: need a cross-platform weak ref
-	#if js
-	var targetWeakMap:Map<Visual, Bool> = new Map();
-	#else
-	var targetWeakMap:haxe.ds.WeakMap<Visual, Bool> = new haxe.ds.WeakMap();
-	#end
+	public var target(default, null):Visual;
 	
 	public function new(target:Visual = null) 
 	{
-		if(target != null)
-			targetWeakMap.set(target, true);
+		this.target = target;
 	}
 	
 	public function contains(object:Visual):Bool
@@ -41,6 +35,11 @@ class LuxeDisplayListAdapter implements IDisplayListAdapter<Visual>
 		return contain(target, object);
 	}
 	
+	public function dispose():Void
+	{
+		target = null;
+	}
+	
 	public function getHierarchy(object:Visual):Array<Visual>
 	{
 		var list = [];
@@ -54,12 +53,5 @@ class LuxeDisplayListAdapter implements IDisplayListAdapter<Visual>
 		}
 		
 		return list;
-	}
-	
-	function get_target():Visual
-	{
-		for (key in targetWeakMap.keys())
-			return key;
-		return null;
 	}
 }

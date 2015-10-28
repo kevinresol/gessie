@@ -40,11 +40,11 @@ class LuxeInputAdapter implements IInputAdapter<Visual>
 	{
 		var target = null; // = getVisualUnderPoint();
 		var depth = -1.;
-		
-		for (en in Luxe.scene.entities)
+		var pos = Luxe.camera.screen_point_to_world(e.pos);
+		for(en in LuxeDisplayListAdapter.targets)
 		{
 			var v = Std.instance(en, Visual);
-			if (v != null && v.depth >= depth && Luxe.utils.geometry.point_in_geometry(e.pos, v.geometry) )
+			if (v != null && v.depth >= depth && Luxe.utils.geometry.point_in_geometry(pos, v.geometry) )
 			{
 				target = v;
 				depth = v.depth;

@@ -11,18 +11,11 @@ import openfl.display.Stage;
  */
 class OpenflDisplayListAdapter implements IDisplayListAdapter<DisplayObject>
 {
-	public var target(get, null):DisplayObject;
-	
-	// TODO: need a cross-platform weak ref
-	#if js
-	var targetWeakMap:Map<DisplayObject, Bool> = new Map();
-	#else
-	var targetWeakMap:haxe.ds.WeakMap<DisplayObject, Bool> = new haxe.ds.WeakMap();
-	#end
+	public var target(default, null):DisplayObject;
 	
 	public function new(target:DisplayObject = null) 
 	{
-		targetWeakMap.set(target, true);
+		this.target = target;
 	}
 	
 	public function contains(object:DisplayObject):Bool
@@ -59,6 +52,11 @@ class OpenflDisplayListAdapter implements IDisplayListAdapter<DisplayObject>
 		return false;
 	}
 	
+	public function dispose()
+	{
+		target = null;
+	}
+	
 	public function getHierarchy(object:DisplayObject):Array<DisplayObject>
 	{
 		var list = [];
@@ -69,12 +67,5 @@ class OpenflDisplayListAdapter implements IDisplayListAdapter<DisplayObject>
 		}
 		
 		return list;
-	}
-	
-	function get_target():DisplayObject
-	{
-		for (key in targetWeakMap.keys())
-			return key;
-		return null;
 	}
 }

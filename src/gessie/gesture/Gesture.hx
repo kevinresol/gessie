@@ -42,6 +42,10 @@ class Gesture<T:{}>
 	{
 		preinit();
 		this.target = target;
+		
+		#if luxe
+		gessie.impl.luxe.LuxeDisplayListAdapter.targets.push(cast target);
+		#end
 	}
 	
 	public inline function on<T>(event:GestureEventType, handler:T->Void)
@@ -99,6 +103,10 @@ class Gesture<T:{}>
 	
 	public function dispose()
 	{
+		#if luxe
+		gessie.impl.luxe.LuxeDisplayListAdapter.targets.remove(cast target);
+		#end
+		
 		//TODO
 		reset();
 		target = null;
@@ -397,6 +405,7 @@ class Gesture<T:{}>
 		if (target != v)
 		{
 			uninstallTarget(target);
+			if(targetAdapter != null) targetAdapter.dispose();
 			targetAdapter = v != null ? Gessie.createGestureTargetAdapter(v) : null;
 			installTarget(v);
 		}

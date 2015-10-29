@@ -1,6 +1,6 @@
 package gessie.core;
 
-import gessie.core.ITouchHandler.ITouchHitTester;
+import gessie.core.ITouchHitTester;
 import gessie.geom.Point;
 import gessie.util.Macros.*;
 import gessie.util.Util.*;

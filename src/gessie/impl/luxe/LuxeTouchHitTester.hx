@@ -1,5 +1,5 @@
 package gessie.impl.luxe;
-import gessie.core.ITouchHandler.ITouchHitTester;
+import gessie.core.ITouchHitTester;
 import gessie.geom.Point;
 import luxe.Vector;
 import luxe.Visual;
@@ -17,7 +17,7 @@ class LuxeTouchHitTester implements ITouchHitTester<Visual>
 		helperVector = new Vector();
 	}
 	
-	public function hitTest(point:Point, possibleTarget:Visual):Visual
+	public function hitTest(point:Point, possibleTarget:Visual, ?ofClass:Class<Dynamic>):Visual
 	{
 		/* since the touch begin event is only triggered when there is a target
 		 * (see LuxeInputAdapter#ontouchdown), we don't need to find target from a point here

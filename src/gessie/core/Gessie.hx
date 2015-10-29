@@ -2,7 +2,7 @@ package gessie.core;
 import gessie.core.GestureManager;
 import gessie.core.IDisplayListAdapter;
 import gessie.core.IInputAdapter;
-import gessie.core.ITouchHandler.ITouchHitTester;
+import gessie.core.ITouchHitTester;
 import gessie.core.TouchManager;
 import gessie.util.Emitter;
 import gessie.util.Macros.*;

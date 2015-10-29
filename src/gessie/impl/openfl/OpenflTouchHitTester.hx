@@ -24,7 +24,7 @@ class OpenflTouchHitTester implements ITouchHitTester<DisplayObject>
 	
 	/* INTERFACE gessie.core.ITouchHandler.ITouchHitTester<T> */
 	
-	public function hitTest(point:Point, possibleTarget:DisplayObject):DisplayObject
+	public function hitTest(point:Point, possibleTarget:DisplayObject, ?ofClass:Class<Dynamic>):DisplayObject
 	{
 		if (possibleTarget != null) return possibleTarget;
 		

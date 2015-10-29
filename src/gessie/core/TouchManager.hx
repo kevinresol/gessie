@@ -2,13 +2,14 @@ package gessie.core;
 
 import gessie.core.ITouchHitTester;
 import gessie.geom.Point;
+import gessie.util.Emitter;
 import gessie.util.Macros.*;
 import gessie.util.Util.*;
 
 @:allow(gessie)
 class TouchManager<T:{}>
 {
-	var gestureManager:GestureManager<T>;
+	var emitter:Emitter<TouchEventType> = new Emitter();
 	var touches:Map<Int, Touch<T>> = new Map();
 	var hitTesters:Array<ITouchHitTester<T>> = [];
 	var hitTesterPrioritiesMap:Map<ITouchHitTester<T>, Int> = new Map();
@@ -16,9 +17,9 @@ class TouchManager<T:{}>
 	var activeTouchesCount(default, null):Int;
 	
 	
-    public function new(gestureManager:GestureManager<T>)
+    public function new()
 	{
-		this.gestureManager = gestureManager;
+		
 	}
 	
 	public function getTouches(target:T):Array<Touch<T>>
@@ -28,6 +29,16 @@ class TouchManager<T:{}>
 		else
 			return null;
 	}
+	
+	public inline function on<T>(event:TouchEventType, handler:T->Void) 
+	{
+        emitter.on(event, handler);
+    }
+    
+    public inline function off<T>(event:TouchEventType, handler:T->Void) 
+	{
+        return emitter.off(event, handler);
+    }
 	
 	function addTouchHitTester(touchHitTester:gessie.core.ITouchHitTester<T>, priority:Int = 0)
 	{
@@ -109,7 +120,7 @@ class TouchManager<T:{}>
 		touches[touchID] = touch;
 		activeTouchesCount++;
 		
-		gestureManager.onTouchBegin(touch);
+		emitter.emit(TBegan, touch);
 		
 		return true;
 	}
@@ -126,7 +137,7 @@ class TouchManager<T:{}>
 			// the location is the same, but size has changed. We are only interested
 			// in location at the moment, so we shall ignore irrelevant calls.
 			
-			gestureManager.onTouchMove(touch);
+			emitter.emit(TMoved, touch);
 		}
 	}
 	
@@ -142,7 +153,7 @@ class TouchManager<T:{}>
 		touches.remove(touchID);
 		activeTouchesCount--;
 		
-		gestureManager.onTouchEnd(touch);
+		emitter.emit(TEnded, touch);
 		
 		touch.target = null;
 	}
@@ -159,7 +170,7 @@ class TouchManager<T:{}>
 		touches.remove(touchID);
 		activeTouchesCount--;
 		
-		gestureManager.onTouchCancel(touch);
+		emitter.emit(TCancelled, touch);
 		
 		touch.target = null;
 	}
@@ -189,4 +200,14 @@ class TouchManager<T:{}>
 		return hitTesters.indexOf(x) > hitTesters.indexOf(y) ? 1 : -1;
 	}
 	
+}
+
+
+@:enum 
+abstract TouchEventType(Int) from Int to Int
+{
+	var TBegan = 1;
+	var TMoved = 2;
+	var TEnded = 3;
+	var TCancelled = 4;
 }

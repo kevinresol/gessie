@@ -4,6 +4,6 @@ class DragData
 {
     public function new()
     {
-        
+		
     }
 }

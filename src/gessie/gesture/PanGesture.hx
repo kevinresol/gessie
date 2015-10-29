@@ -103,7 +103,7 @@ class PanGesture<T:{}> extends Gesture<T>
 				locationOffset.y = 0;
 			}
 			
-			if (locationOffset.length > slop || slop != slop)//faster isNaN(slop)
+			if (locationOffset.length > slop || Math.isNaN(slop))//slop != slop
 			{
 				// NB! += instead of = for the case when this gesture recognition is delayed via requireGestureToFail
 				_offsetX += location.x - prevLocationX;

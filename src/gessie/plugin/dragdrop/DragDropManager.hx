@@ -1,33 +1,46 @@
 package gessie.plugin.dragdrop;
 
 import gessie.core.*;
+import gessie.core.Touch;
+import gessie.core.TouchManager;
 import gessie.geom.Point;
 import gessie.util.Macros.*;
 import gessie.plugin.dragdrop.*;
 
 class DragDropManager
 {
-    static var helperPoint:Point;
+    static var helperPoint:Point = new Point();
     static var dragSource:IDragSource;
     static var dropTarget:IDropTarget;
     static var dragData:DragData;
     static var touchPointId:Int;
     static var isAccepted:Bool;
     static var isDragging(get, never):Bool;
+	static var touchManager:TouchManager<Dynamic>;
+	
+	public static function init(touchManager)
+	{
+		if (DragDropManager.touchManager != null) return;
+		DragDropManager.touchManager = touchManager;
+		
+	}
     
     public static function startDrag(source:IDragSource, touch:Touch<Dynamic>, data:DragData)
     {
         if(isDragging) cancelDrag();
         
         assertNull(source);
-        assertNull(dragData);
+        assertNull(data);
         
         dragSource = source;
         dragData = data;
         touchPointId = touch.id;
         source.onDragStart(data);
         
-        // TODO handle touchmove and keydown
+        touchManager.on(TBegan, onTouchBegin);
+		touchManager.on(TMoved, onTouchMove);
+		touchManager.on(TEnded, onTouchEnd);
+		touchManager.on(TCancelled, onTouchCancel);
     }
     
     public static function acceptDrag(target:IDropTarget)
@@ -43,71 +56,60 @@ class DragDropManager
         completeDrag(false);
     }
     
-    public static function onTouchBegin(touchId:Int, x:Float, y:Float)
+    public static function onTouchBegin(touch:Touch<Dynamic>)
     {
-        if(touchId != touchPointId) return;
+        if(touch.id != touchPointId) return;
     }
-    public static function onTouchMove(touchId:Int, x:Float, y:Float)
+    public static function onTouchMove(touch:Touch<Dynamic>)
     {
-        if(touchId != touchPointId) return;
+        if(touch.id != touchPointId) return;
+		helperPoint.x = touch.location.x;
+		helperPoint.y = touch.location.y;
+		updateDropTarget(helperPoint);
     }
-    public static function onTouchEnd(touchId:Int, x:Float, y:Float)
+	
+    public static function onTouchEnd(touch:Touch<Dynamic>)
     {
-        if(touchId != touchPointId) return;
+        if(touch.id != touchPointId) return;
         touchPointId = -1;
 		var isDropped = false;
 		if(dropTarget != null && isAccepted)
 		{
-			dropTarget.onDragComplete(dragData);
+			dropTarget.onDragDrop(dragData);
 			isDropped = true;
 		}
 		dropTarget = null;
 		completeDrag(isDropped);
     }
-    public static function onTouchCancel(touchId:Int, x:Float, y:Float)
+    public static function onTouchCancel(touch:Touch<Dynamic>)
     {
-        if(touchId != touchPointId) return;
+        if(touch.id != touchPointId) return;
     }
     
     static function updateDropTarget(location:Point)
 	{
-		/*
-        var target = Gessie.touchManager.hitTesters[0].hitTest(location);
-        
-		while(target && !(target is IDropTarget))
+		var target:IDropTarget = null;
+		for (hitTester in Gessie.touchManager.hitTesters)
 		{
-			target = target.parent;
+			target = hitTester.hitTest(location, null, IDropTarget, [dragSource]);
+			if (target != null) break;
 		}
-		if(target)
-		{
-			target.globalToLocal(location, location);
-		}
+		
 		if(target != dropTarget)
 		{
-			if(dropTarget)
-			{
-				//notice that we can reuse the previously saved location
-				dropTarget.dispatchEvent(new DragDropEvent(DragDropEvent.DRAG_EXIT, _dragData, false, dropTargetLocalX, dropTargetLocalY));
-			}
-			dropTarget = IDropTarget(target);
+			if(dropTarget != null)
+				dropTarget.onDragExit(dragData);
+				
+			dropTarget = cast target;
 			isAccepted = false;
-			if(dropTarget)
-			{
-				dropTargetLocalX = location.x;
-				dropTargetLocalY = location.y;
-				dropTarget.dispatchEvent(new DragDropEvent(DragDropEvent.DRAG_ENTER, _dragData, false, dropTargetLocalX, dropTargetLocalY));
-			}
+			
+			if(dropTarget != null)
+				dropTarget.onDragEnter(dragData, location.x, location.y);
 		}
-		else if(dropTarget)
-		{
-			dropTargetLocalX = location.x;
-			dropTargetLocalY = location.y;
-			dropTarget.dispatchEvent(new DragDropEvent(DragDropEvent.DRAG_MOVE, _dragData, false, dropTargetLocalX, dropTargetLocalY));
-		}
-        */
+		else if(dropTarget != null)
+			dropTarget.onDragMove(dragData, location.x, location.y);
+        
 	}
-
-    
     
     static function completeDrag(isDropped:Bool)
     {
@@ -127,7 +129,11 @@ class DragDropManager
     
     static function cleanup()
 	{
-        // remove touchmove keydown handlers
+        touchManager.off(TBegan, onTouchBegin);
+		touchManager.off(TMoved, onTouchMove);
+		touchManager.off(TEnded, onTouchEnd);
+		touchManager.off(TCancelled, onTouchCancel);
+		
 		dragSource = null;
 		dragData = null;
 	}

@@ -17,8 +17,8 @@ class Gessie
 	public static var emitter:Emitter<GessieEventType> = new Emitter();
 	public static var root:Root;
 	public static var inputAdapter(default, set):IInputAdapter<Dynamic>;
-	public static var gestureManager(default, null):GestureManager<Dynamic> = new GestureManager();
-	public static var touchManager(default, null):TouchManager<Dynamic> = new TouchManager(gestureManager);
+	public static var touchManager(default, null):TouchManager<Dynamic> = new TouchManager();
+	public static var gestureManager(default, null):GestureManager<Dynamic> = new GestureManager(touchManager);
 	
 	static var displayListAdaptersMap:Map<String, IDisplayListAdapter<Dynamic>> = new Map();
 	

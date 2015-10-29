@@ -1,6 +1,7 @@
 package gessie.impl.luxe;
 import gessie.core.ITouchHitTester;
 import gessie.geom.Point;
+import luxe.Scene;
 import luxe.Vector;
 import luxe.Visual;
 
@@ -10,19 +11,39 @@ import luxe.Visual;
  */
 class LuxeTouchHitTester implements ITouchHitTester<Visual>
 {
-	var helperVector:Vector;
+	public static var scenes:Array<Scene> = [];
+	
 
 	public function new() 
 	{
-		helperVector = new Vector();
+		
 	}
 	
-	public function hitTest(point:Point, possibleTarget:Visual, ?ofClass:Class<Dynamic>):Visual
+	public function hitTest(point:Point, possibleTarget:Visual, ?ofClass:Class<Dynamic>, ?exclude:Array<Visual>):Visual
 	{
-		/* since the touch begin event is only triggered when there is a target
-		 * (see LuxeInputAdapter#ontouchdown), we don't need to find target from a point here
-		 */
-		return possibleTarget;
+		if(possibleTarget != null)
+			return possibleTarget;
+		
+		var worldPos = Luxe.camera.screen_point_to_world(new Vector(point.x, point.y));
+		
+		var result = null;
+		var depth = -1.;
+		for (scene in scenes) for (en in scene.entities)
+		{
+			var v = Std.instance(en, Visual);
+			if (v != null && v.depth >= depth 
+				&& Luxe.utils.geometry.point_in_geometry(worldPos, v.geometry) 
+				&& (ofClass == null || Std.is(v, ofClass))
+				&& (exclude == null || exclude.indexOf(v) == -1)
+			)
+			{
+				result = v;
+				depth = v.depth;
+			}
+		}
+		//trace("hitTest " + (result != null ? result.name : "null"));
+		return result;
+		
 	}
 	
 }

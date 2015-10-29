@@ -1,6 +1,6 @@
 package gessie.impl.openfl;
 
-import gessie.core.ITouchHandler.ITouchHitTester;
+import gessie.core.ITouchHitTester;
 import gessie.geom.Point;
 import openfl.display.DisplayObject;
 import openfl.display.InteractiveObject;
@@ -24,7 +24,7 @@ class OpenflTouchHitTester implements ITouchHitTester<DisplayObject>
 	
 	/* INTERFACE gessie.core.ITouchHandler.ITouchHitTester<T> */
 	
-	public function hitTest(point:Point, possibleTarget:DisplayObject, ?ofClass:Class<Dynamic>):DisplayObject
+	public function hitTest(point:Point, possibleTarget:DisplayObject, ?ofClass:Class<Dynamic>, ?exclude:Array<DisplayObject>):DisplayObject
 	{
 		if (possibleTarget != null) return possibleTarget;
 		
@@ -33,10 +33,10 @@ class OpenflTouchHitTester implements ITouchHitTester<DisplayObject>
 		var startFrom = 0;
 		
 		var targets = stage.getObjectsUnderPoint(point);
-		if (targets.length == 0) return stage;
+		if (targets.length == 0) return null;
 
 		var startIndex = targets.length - 1 - startFrom;
-		if (startIndex < 0) return stage;
+		if (startIndex < 0) return null;
 
 		var i = startIndex;
 		while (i >= 0)
@@ -46,7 +46,7 @@ class OpenflTouchHitTester implements ITouchHitTester<DisplayObject>
 			while (target != stage)
 			{
 				var io = Std.instance(target, InteractiveObject);
-				if (io != null)
+				if (io != null && (ofClass == null || Std.is(target, ofClass)) && (exclude == null || exclude.indexOf(target) == -1))
 				{
 					if (io.mouseEnabled)
 					{
@@ -61,7 +61,7 @@ class OpenflTouchHitTester implements ITouchHitTester<DisplayObject>
 								
 							parent = parent.parent;
 						}
-						return lastMouseActive != null ? lastMouseActive : stage;
+						return lastMouseActive != null ? lastMouseActive : null;
 					}
 					else
 						break; // break inner while
@@ -73,7 +73,7 @@ class OpenflTouchHitTester implements ITouchHitTester<DisplayObject>
 			i--;
 		}
 			
-		return stage;
+		return null;
 	
 	}
 	

@@ -6,6 +6,7 @@ import haxe.ds.ObjectMap;
 @:allow(gessie)
 class GestureManager<T:{}>
 {
+	var touchManager:TouchManager<T>;
 	var gesturesMap:Map<Gesture<T>, Bool> = new Map();
 	var gesturesForTouchMap:Map<Touch<T>, Array<Gesture<T>>> = new Map();
 	var gesturesForTargetMap:ObjectMap<T, Array<Gesture<T>>> = new ObjectMap();
@@ -13,9 +14,13 @@ class GestureManager<T:{}>
 	var dirtyGesturesMap:Map<Gesture<T>, Bool> = new Map();
 	var root:Root;
 	
-    public function new()
+    public function new(touchManager)
 	{
-		
+		this.touchManager = touchManager;
+		touchManager.on(TBegan, onTouchBegin);
+		touchManager.on(TMoved, onTouchMove);
+		touchManager.on(TEnded, onTouchEnd);
+		touchManager.on(TCancelled, onTouchCancel);
 	}
 	
 	function onRootAvailable(root:Root)

@@ -6,17 +6,21 @@ import luxe.Vector;
 import luxe.Visual;
 
 /**
- * ...
+ * Since Luxe does not has a display list tree structure as in flash/OpenFL
+ * nor a global `getObjectUnderPoint` function,
+ * we have to keep a list of interested scenes in order to get a list of enitites for hit-testing.
+ * `Luxe.scene` is included by default.
+ * Add scenes of interest to the hitTester through `var h = new LuxeTouchHitTester(); h.scenes.push(myScene);`
+ * You can also implement your own hit tester.
  * @author Kevin
  */
 class LuxeTouchHitTester implements ITouchHitTester<Visual>
 {
-	public static var scenes:Array<Scene> = [];
-	
+	public var scenes:Array<Scene>;
 
 	public function new() 
 	{
-		
+		scenes = [Luxe.scene];
 	}
 	
 	public function hitTest(point:Point, possibleTarget:Visual, ?ofClass:Class<Dynamic>, ?exclude:Array<Visual>):Visual
@@ -41,7 +45,6 @@ class LuxeTouchHitTester implements ITouchHitTester<Visual>
 				depth = v.depth;
 			}
 		}
-		//trace("hitTest " + (result != null ? result.name : "null"));
 		return result;
 		
 	}

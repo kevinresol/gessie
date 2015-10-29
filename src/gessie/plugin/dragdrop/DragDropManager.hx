@@ -16,14 +16,6 @@ class DragDropManager
     static var touchPointId:Int;
     static var isAccepted:Bool;
     static var isDragging(get, never):Bool;
-	static var touchManager:TouchManager<Dynamic>;
-	
-	public static function init(touchManager)
-	{
-		if (DragDropManager.touchManager != null) return;
-		DragDropManager.touchManager = touchManager;
-		
-	}
     
     public static function startDrag(source:IDragSource, touch:Touch<Dynamic>, data:DragData)
     {
@@ -37,10 +29,10 @@ class DragDropManager
         touchPointId = touch.id;
         source.onDragStart(data);
         
-        touchManager.on(TBegan, onTouchBegin);
-		touchManager.on(TMoved, onTouchMove);
-		touchManager.on(TEnded, onTouchEnd);
-		touchManager.on(TCancelled, onTouchCancel);
+        Gessie.touchManager.on(TBegan, onTouchBegin);
+		Gessie.touchManager.on(TMoved, onTouchMove);
+		Gessie.touchManager.on(TEnded, onTouchEnd);
+		Gessie.touchManager.on(TCancelled, onTouchCancel);
     }
     
     public static function acceptDrag(target:IDropTarget)
@@ -129,10 +121,10 @@ class DragDropManager
     
     static function cleanup()
 	{
-        touchManager.off(TBegan, onTouchBegin);
-		touchManager.off(TMoved, onTouchMove);
-		touchManager.off(TEnded, onTouchEnd);
-		touchManager.off(TCancelled, onTouchCancel);
+        Gessie.touchManager.off(TBegan, onTouchBegin);
+		Gessie.touchManager.off(TMoved, onTouchMove);
+		Gessie.touchManager.off(TEnded, onTouchEnd);
+		Gessie.touchManager.off(TCancelled, onTouchCancel);
 		
 		dragSource = null;
 		dragData = null;

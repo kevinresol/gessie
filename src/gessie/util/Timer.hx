@@ -47,10 +47,37 @@ class Timer
 	#if js
 	var __timerID:Int;
 	#else
-	var __timer:haxe.Timer;
+	
+	static var hasNullTimers:Bool;
+	static var activeTimers:Array<Timer> = [];
+	var fireAt:Float;
+	
+	public static function update()
+	{
+		var ms = getMs();
+		
+		hasNullTimers = false;
+		for (i in 0...activeTimers.length)
+		{
+			var timer = activeTimers[i];
+			if (timer != null && ms > timer.fireAt)
+				timer.timer_onTimer();
+		}
+		
+		if(hasNullTimers)
+			activeTimers = activeTimers.filter(function(t) return t != null);
+		
+	}
+	
+	static function getMs()
+	{
+		#if sys
+		return Sys.time() * 1000;
+		#else
+		return haxe.Timer.stamp() * 1000;
+		#end
+	}
 	#end
-	
-	
 	
 	
 	public function new (delay:Float, repeatCount:Int = 0):Void {
@@ -90,8 +117,8 @@ class Timer
 			#if js
 			__timerID = js.Browser.window.setInterval (timer_onTimer, Std.int (__delay));
 			#else
-			__timer = new haxe.Timer (__delay);
-			__timer.run = timer_onTimer;
+			fireAt = getMs() + __delay;
+			activeTimers.push(this);
 			#end
 			
 		}
@@ -110,12 +137,9 @@ class Timer
 			
 		}
 		#else
-		if (__timer != null) {
-			
-			__timer.stop ();
-			__timer = null;
-			
-		}
+		var index = activeTimers.indexOf(this);
+		activeTimers[index] = null;
+		hasNullTimers = true;
 		#end
 		
 	}

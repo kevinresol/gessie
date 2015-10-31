@@ -51,6 +51,10 @@ class Gessie
 	public static function update()
 	{
 		emitter.emit(GEnterFrame);
+		
+		#if (!openfl && !js)
+		gessie.util.Timer.update();
+		#end
 	}
 	
 	static function createGestureTargetAdapter<T:{}>(target:T):IDisplayListAdapter<T>

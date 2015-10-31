@@ -50,7 +50,7 @@ class LuxeInputAdapter implements IInputAdapter<Visual>
 		for(en in LuxeDisplayListAdapter.targets)
 		{
 			var v = Std.instance(en, Visual);
-			if (v != null && v.depth >= depth && Luxe.utils.geometry.point_in_geometry(pos, v.geometry))
+			if (v != null && v.visible && v.depth >= depth && Luxe.utils.geometry.point_in_geometry(pos, v.geometry))
 			{
 				target = v;
 				depth = v.depth;
@@ -85,7 +85,7 @@ class LuxeInputAdapter implements IInputAdapter<Visual>
 		for(en in LuxeDisplayListAdapter.targets)
 		{
 			var v = Std.instance(en, Visual);
-			if (v != null && v.depth >= depth && Luxe.utils.geometry.point_in_geometry(pos, v.geometry))
+			if (v != null && v.visible && v.depth >= depth && Luxe.utils.geometry.point_in_geometry(pos, v.geometry))
 			{
 				target = v;
 				depth = v.depth;

@@ -173,10 +173,9 @@ class GestureManager<T:{}>
 		
 		// Create a sorted(!) list of gestures which are interested in this touch.
 		// Sorting priority: deeper target has higher priority, recently added gesture has higher priority.
-		var gesturesForTarget;
 		for (target in hierarchy)
 		{
-			gesturesForTarget = gesturesForTargetMap.get(target);
+			var gesturesForTarget = gesturesForTargetMap.get(target);
 			if (gesturesForTarget != null)
 			{
 				var i = gesturesForTarget.length;

@@ -45,7 +45,8 @@ class Gesture<T:{}>
 		this.target = target;
 		
 		#if luxe
-		gessie.impl.luxe.LuxeDisplayListAdapter.targets.push(cast target);
+		if (gessie.impl.luxe.LuxeDisplayListAdapter.targets.indexOf(cast target) == -1)
+			gessie.impl.luxe.LuxeDisplayListAdapter.targets.push(cast target);
 		#end
 	}
 	

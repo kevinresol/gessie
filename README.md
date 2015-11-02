@@ -17,8 +17,6 @@ public function new()
 	Gessie.addDisplayListAdapter(DisplayObject, new OpenflDisplayListAdapter());
 	Gessie.addTouchHitTester(new OpenflTouchHitTester(stage));
 	
-	stage.addEventListener(Event.ENTER_FRAME, function(_) Gessie.update());
-	
 	var bmd = new BitmapData(400,400);
 	var bm = new Bitmap(bmd);
 	var s = new Sprite();

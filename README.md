@@ -72,11 +72,11 @@ override function ready()
 
 ### Other platforms:
 
-Implement 3 interfaces:
-
-- ITouchHitTester
-- IInputAdapter
-- IDisplayListAdapter
+1. Call `Gessie.update()` in your update loop
+2. Implement 3 interfaces:
+  - ITouchHitTester
+  - IInputAdapter
+  - IDisplayListAdapter
 
 
 ## License

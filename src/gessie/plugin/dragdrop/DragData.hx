@@ -1,9 +1,7 @@
 package gessie.plugin.dragdrop;
+import haxe.ds.StringMap;
 
-class DragData
+class DragData extends StringMap<Dynamic>
 {
-    public function new()
-    {
-		
-    }
+    
 }

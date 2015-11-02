@@ -27,7 +27,7 @@ class DragDropManager
         dragSource = source;
         dragData = data;
         touchPointId = touch.id;
-        source.dragDropEmitter.emit(DStart, {data:data});
+        source.dragDropEmitter.emit(DStart, {data:data, location:touch.location});
         
         Gessie.touchManager.on(TBegan, onTouchBegin);
 		Gessie.touchManager.on(TMoved, onTouchMove);
@@ -116,7 +116,7 @@ class DragDropManager
 		var source = dragSource;
 		var data = dragData;
 		cleanup();
-        source.dragDropEmitter.emit(DComplete, {data:data, isDropped:false});
+        source.dragDropEmitter.emit(DComplete, {data:data, isDropped:isDropped});
     }
     
     static function cleanup()

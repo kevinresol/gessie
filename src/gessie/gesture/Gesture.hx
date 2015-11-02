@@ -1,6 +1,7 @@
 package gessie.gesture;
 import gessie.core.Gessie;
 import gessie.core.GestureEventType;
+import gessie.core.GestureManager;
 import gessie.core.GestureState;
 import gessie.core.IGestureTargetAdapter;
 import gessie.core.Touch;
@@ -31,7 +32,7 @@ class Gesture<T:{}>
 	public var gesturesShouldRecognizeSimultaneouslyCallback:Gesture<T>->Gesture<T>->Bool;
 	
 	var emitter:Emitter<GestureEventType> = new Emitter();
-	var gestureManager = Gessie.gestureManager;
+	var gestureManager:GestureManager<T> = cast Gessie.gestureManager;
 	var touches:Map<Int, Touch<T>> = new Map();
 	var centralPoint:Point = new Point();
 	var gesturesToFail:Map<Gesture<T>, Bool> = new Map();

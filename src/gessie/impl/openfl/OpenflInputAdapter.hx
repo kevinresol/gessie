@@ -1,9 +1,11 @@
 package gessie.impl.openfl;
+import gessie.core.Gessie;
 import gessie.core.IInputAdapter;
 import gessie.core.TouchManager;
 import openfl.display.DisplayObject;
 import openfl.display.Stage;
 import openfl.events.EventPhase;
+import openfl.events.Event;
 import openfl.events.MouseEvent;
 import openfl.events.TouchEvent;
 import openfl.ui.Multitouch;
@@ -35,6 +37,8 @@ class OpenflInputAdapter implements IInputAdapter<DisplayObject>
 		
 		this.explicitlyHandleTouchEvents = explicitlyHandleTouchEvents;
 		this.explicitlyHandleMouseEvents = explicitlyHandleMouseEvents;
+		
+		stage.addEventListener(Event.ENTER_FRAME, function(_) Gessie.update());
 	}
 	
 	public function init()

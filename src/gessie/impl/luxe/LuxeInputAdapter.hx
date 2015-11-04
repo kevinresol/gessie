@@ -47,7 +47,7 @@ class LuxeInputAdapter implements IInputAdapter<Visual>
 		var target = null; // = getVisualUnderPoint();
 		var depth = -1.;
 		var pos = Luxe.camera.screen_point_to_world(e.pos);
-		for(en in LuxeDisplayListAdapter.targets)
+		for(en in LuxeDisplayListAdapter.targets.keys())
 		{
 			var v = Std.instance(en, Visual);
 			if (v != null && v.visible && v.depth >= depth && v.geometry != null && Luxe.utils.geometry.point_in_geometry(pos, v.geometry))
@@ -82,7 +82,7 @@ class LuxeInputAdapter implements IInputAdapter<Visual>
 		var target = null; // = getVisualUnderPoint();
 		var depth = -1.;
 		var pos = Luxe.camera.screen_point_to_world(translateTouchPos(e.pos,helperVector));
-		for(en in LuxeDisplayListAdapter.targets)
+		for(en in LuxeDisplayListAdapter.targets.keys())
 		{
 			var v = Std.instance(en, Visual);
 			if (v != null && v.visible && v.depth >= depth && v.geometry != null && Luxe.utils.geometry.point_in_geometry(pos, v.geometry))

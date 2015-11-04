@@ -45,8 +45,7 @@ class Gesture<T:{}>
 		this.target = target;
 		
 		#if luxe
-		if (gessie.impl.luxe.LuxeDisplayListAdapter.targets.indexOf(cast target) == -1)
-			gessie.impl.luxe.LuxeDisplayListAdapter.targets.push(cast target);
+		gessie.impl.luxe.LuxeDisplayListAdapter.addTarget(cast target);
 		#end
 	}
 	
@@ -106,7 +105,7 @@ class Gesture<T:{}>
 	public function dispose()
 	{
 		#if luxe
-		gessie.impl.luxe.LuxeDisplayListAdapter.targets.remove(cast target);
+		gessie.impl.luxe.LuxeDisplayListAdapter.removeTarget(cast target);
 		#end
 		
 		//TODO

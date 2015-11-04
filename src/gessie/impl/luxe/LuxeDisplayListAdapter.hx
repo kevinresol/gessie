@@ -10,9 +10,22 @@ import luxe.Visual;
  */
 class LuxeDisplayListAdapter implements IDisplayListAdapter<Visual>
 {
-	public static var targets:Array<Visual> = [];
+	public static var targets:Map<Visual, Int> = new Map();
 	
 	public var target(default, null):Visual;
+	
+	public static function addTarget(target:Visual)
+	{
+		targets[target] = targets.exists(target) ? targets[target] + 1 : 1;
+	}
+	
+	public static function removeTarget(target:Visual)
+	{
+		var i = targets[target] - 1;
+		
+		if(i == 0) targets.remove(target);
+		else targets[target] = i;
+	}
 	
 	public function new(target:Visual = null) 
 	{

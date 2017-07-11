@@ -30,11 +30,11 @@ class LuxeInputAdapter implements IInputAdapter<Visual>
 	
 	public function init():Void
 	{
-		Luxe.on(Luxe.Ev.update, function(_) Gessie.update());
+		Luxe.on(luxe.Ev.update, function(_) Gessie.update());
 		#if mobile
-		Luxe.on(Luxe.Ev.touchdown, ontouchdown);
-		Luxe.on(Luxe.Ev.touchup, ontouchup);
-		Luxe.on(Luxe.Ev.touchmove, ontouchmove);
+		Luxe.on(luxe.Ev.touchdown, ontouchdown);
+		Luxe.on(luxe.Ev.touchup, ontouchup);
+		Luxe.on(luxe.Ev.touchmove, ontouchmove);
 		#else
 		Luxe.on(Luxe.Ev.mousedown, onmousedown);
 		Luxe.on(Luxe.Ev.mouseup, onmouseup);

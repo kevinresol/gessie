@@ -28,6 +28,19 @@ class Point
 	public function subtract(other:Point)
 		return new Point(x - other.x, y - other.y);
     
+    public function normalize (thickness:Float) {
+		if (x == 0 && y == 0)
+        {
+			return;
+		}
+        else
+        {
+			var norm = thickness / Math.sqrt (x * x + y * y);
+			x *= norm;
+			y *= norm;
+		}
+    }
+
     public inline function clone()
         return new Point(x, y);
     

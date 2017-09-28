@@ -3,6 +3,9 @@ package;
 import gessie.gesture.PanGesture;
 import gessie.gesture.SwipeGesture;
 import gessie.gesture.TapGesture;
+import gessie.gesture.ZoomGesture;
+import gessie.gesture.RotateGesture;
+import gessie.gesture.TransformGesture;
 import gessie.impl.luxe.LuxeDisplayListAdapter;
 import gessie.impl.luxe.LuxeInputAdapter;
 import gessie.impl.luxe.LuxeTouchHitTester;
@@ -56,6 +59,19 @@ class Main extends luxe.Game
 		
 		var swipe = new SwipeGesture(s);
 		swipe.on(GERecognized, function(_) text.text += '\nswiped purple');
+
+		var zoom = new ZoomGesture(s1);
+        zoom.on(GEChanged, function(_) {
+                            s1.scale.x=zoom.scaleX;
+                            s1.scale.y=zoom.scaleY;
+                        });
+        var rotate = new RotateGesture(s1);
+        rotate.on(GEChanged, function(_) s1.rotation_z=rotate.rotation);
+        var trans = new TransformGesture(s);
+        trans.on(GEChanged, function(_) {
+                            s.scale.set_xy(trans.scale, trans.scale);
+                            s.rotation_z=trans.rotation;
+                        });
 	}
 
 	override function onkeyup(e:KeyEvent) 

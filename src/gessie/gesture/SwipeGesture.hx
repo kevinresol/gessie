@@ -44,7 +44,7 @@ class SwipeGesture<T:{}> extends Gesture<T>
 	 * Default value is <code>Capabilities.screenDPI / 6</code> and generally should not
 	 * be changed.
 	 */
-	public var minOffset:Float = MIN_OFFSET;
+	public var minOffset:Point = new Point(MIN_OFFSET, MIN_OFFSET);
 	
 	/**
 	 * Minimum velocity (in pixels per millisecond) for gesture to be recognized.
@@ -54,7 +54,7 @@ class SwipeGesture<T:{}> extends Gesture<T>
 	 * @see #minOffset
 	 * @see #minDuration
 	 */
-	public var minVelocity:Float = MIN_VELOCITY;
+	public var minVelocity:Point = new Point(MIN_VELOCITY, MIN_VELOCITY);
 	
 	var _offset:Point = new Point();
 	var _startTime:Int;
@@ -171,7 +171,8 @@ class SwipeGesture<T:{}> extends Gesture<T>
 		if (_noDirection)
 		{
 			if ((offsetLength > slop || slop != slop) &&
-				(avrgVel >= minVelocity || offsetLength >= minOffset))
+				((avrgVel >= minVelocity.x || avrgVel >= minVelocity.y) && 
+				(offsetLength >= minOffset.x || offsetLength >= minOffset.y)))
 			{
 				setState(GSRecognized);
 			}
@@ -199,7 +200,7 @@ class SwipeGesture<T:{}> extends Gesture<T>
 						
 						setState(GSFailed);
 					}
-					else if (absVelX >= minVelocity || absOffsetX >= minOffset)
+					else if (absVelX >= minVelocity.x || absOffsetX >= minOffset.x)
 					{
 						_offset.y = 0;
 						setState(GSRecognized);
@@ -220,7 +221,7 @@ class SwipeGesture<T:{}> extends Gesture<T>
 						
 						setState(GSFailed);
 					}
-					else if (absVelY >= minVelocity || absOffsetY >= minOffset)
+					else if (absVelY >= minVelocity.y || absOffsetY >= minOffset.y)
 					{
 						_offset.x = 0;
 						setState(GSRecognized);

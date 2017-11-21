@@ -12,9 +12,7 @@ import hxd.Event;
  */
 class HeapsInputAdapter implements IInputAdapter<Sprite>
 {
-    var mousePressed = false;
-
-	@:isVar
+    @:isVar
 	public var touchManager(get, set):TouchManager<Sprite>;
 	
     var s2d:h2d.Scene;
@@ -52,23 +50,17 @@ class HeapsInputAdapter implements IInputAdapter<Sprite>
             if (c != null && c.getBounds().contains(pt)) target = c;
 
         if (target != null)
-			touchManager.onTouchBegin((e.touchId!=null)?e.touchId:e.button, e.relX, e.relY, target);
-        
-        mousePressed = e.touchId == null;
+			touchManager.onTouchBegin(e.touchId, e.relX, e.relY, target);
     }
 
     function onMove(e:Event)
     {
-        if (mousePressed || e.touchId != null)
-            touchManager.onTouchMove((e.touchId!=null)?e.touchId:e.button, e.relX, e.relY);
+        touchManager.onTouchMove(e.touchId, e.relX, e.relY);
     }
 	
 	function onRelease(e:Event)
     {
-        if (mousePressed || e.touchId != null)
-            touchManager.onTouchEnd((e.touchId!=null)?e.touchId:e.button, e.relX, e.relY);
-        
-        mousePressed = false;
+        touchManager.onTouchEnd(e.touchId, e.relX, e.relY);
     }
 
     inline function get_touchManager()

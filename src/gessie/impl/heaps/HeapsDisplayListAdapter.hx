@@ -2,28 +2,28 @@ package gessie.impl.heaps;
 
 import gessie.core.Gessie;
 import gessie.core.IDisplayListAdapter;
-import h2d.Sprite;
+import h2d.Object;
 
 /**
  * ...
  * @author josu igoa
  */
-class HeapsDisplayListAdapter implements IDisplayListAdapter<Sprite>
+class HeapsDisplayListAdapter implements IDisplayListAdapter<Object>
 {
-	public var target(default, null):Sprite;
+	public var target(default, null):Object;
 	
-	public function new(target:Sprite = null) 
+	public function new(target:Object = null) 
 	{
 		this.target = target;
 	}
 	
-	public function contains(object:Sprite):Bool
+	public function contains(object:Object):Bool
 	{
 		if (target == Gessie.root)
 		{
 			return true;
 		}
-        function contain(e:Sprite, o:Sprite)
+        function contain(e:Object, o:Object)
 		{
 			if (e.getChildIndex(o) != -1)
 				return true;
@@ -42,7 +42,7 @@ class HeapsDisplayListAdapter implements IDisplayListAdapter<Sprite>
 		target = null;
 	}
 	
-	public function getHierarchy(object:Sprite):Array<Sprite>
+	public function getHierarchy(object:Object):Array<Object>
 	{
 		var list = [];
 		

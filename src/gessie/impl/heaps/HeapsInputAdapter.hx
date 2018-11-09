@@ -4,18 +4,18 @@ import gessie.core.Gessie;
 import gessie.core.IInputAdapter;
 import gessie.core.TouchManager;
 
-import h2d.Sprite;
+import h2d.Object;
 import hxd.Event;
 /**
  * ...
  * @author josu igoa
  */
-class HeapsInputAdapter implements IInputAdapter<Sprite>
+class HeapsInputAdapter implements IInputAdapter<Object>
 {
     var mousePressed = false;
 
 	@:isVar
-	public var touchManager(get, set):TouchManager<Sprite>;
+	public var touchManager(get, set):TouchManager<Object>;
 	
     var s2d:h2d.Scene;
     var catchSceneInput:Bool;
@@ -46,27 +46,27 @@ class HeapsInputAdapter implements IInputAdapter<Sprite>
 
     function onPush(e:Event)
     {
-        var target:h2d.Sprite = (catchSceneInput) ? s2d : null;
+        var target:h2d.Object = (catchSceneInput) ? s2d : null;
         var pt = new h2d.col.Point(e.relX, e.relY);
         for(c in s2d.iterator())
             if (c != null && c.getBounds().contains(pt)) target = c;
 
         if (target != null)
-			touchManager.onTouchBegin((e.touchId!=null)?e.touchId:e.button, e.relX, e.relY, target);
+			touchManager.onTouchBegin((e.touchId!=0)?e.touchId:e.button, e.relX, e.relY, target);
         
-        mousePressed = e.touchId == null;
+        mousePressed = e.touchId == 0;
     }
 
     function onMove(e:Event)
     {
-        if (mousePressed || e.touchId != null)
-            touchManager.onTouchMove((e.touchId!=null)?e.touchId:e.button, e.relX, e.relY);
+        if (mousePressed || e.touchId != 0)
+            touchManager.onTouchMove((e.touchId!=0)?e.touchId:e.button, e.relX, e.relY);
     }
 	
 	function onRelease(e:Event)
     {
-        if (mousePressed || e.touchId != null)
-            touchManager.onTouchEnd((e.touchId!=null)?e.touchId:e.button, e.relX, e.relY);
+        if (mousePressed || e.touchId != 0)
+            touchManager.onTouchEnd((e.touchId!=0)?e.touchId:e.button, e.relX, e.relY);
         
         mousePressed = false;
     }

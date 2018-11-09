@@ -3,12 +3,12 @@ package gessie.impl.heaps;
 import gessie.core.ITouchHitTester;
 import gessie.geom.Point;
 import h2d.Scene;
-import h2d.Sprite;
+import h2d.Object;
 
 /**
  * @author josu igoa
  */
-class HeapsTouchHitTester implements ITouchHitTester<Sprite>
+class HeapsTouchHitTester implements ITouchHitTester<Object>
 {
 	public var s2d:Scene;
 
@@ -19,7 +19,7 @@ class HeapsTouchHitTester implements ITouchHitTester<Sprite>
         this.s2d = s2d;
 	}
 	
-	public function hitTest(point:Point, possibleTarget:Sprite, ?ofClass:Class<Dynamic>, ?exclude:Array<Sprite>):Sprite
+	public function hitTest(point:Point, possibleTarget:Object, ?ofClass:Class<Dynamic>, ?exclude:Array<Object>):Object
 	{
 		if(possibleTarget != null)
 			return possibleTarget;

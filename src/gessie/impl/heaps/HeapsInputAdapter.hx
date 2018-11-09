@@ -13,7 +13,7 @@ import hxd.Event;
 class HeapsInputAdapter implements IInputAdapter<Object>
 {
     @:isVar
-	public var touchManager(get, set):TouchManager<Sprite>;
+	public var touchManager(get, set):TouchManager<Object>;
 	
     var s2d:h2d.Scene;
     var catchSceneInput:Bool;
@@ -29,7 +29,7 @@ class HeapsInputAdapter implements IInputAdapter<Object>
 	{
         // var t = new haxe.Timer(Std.int(1000/hxd.Timer.wantedFPS));
         // t.run = Gessie.update;
-        @:privateAccess s2d.stage.addEventTarget(onEvent);
+        @:privateAccess s2d.window.addEventTarget(onEvent);
 	}
 
     function onEvent(e:Event)
